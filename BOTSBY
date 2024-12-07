@@ -43,14 +43,12 @@ int main()
     set_servo_position(sweep, sweep_in);
     msleep(1000);  //TEMP, JUST FOR SETUP
     
-    
-    
     stopTuah(500, 200); //lines up on black line
     drive(1,900, 5);
+    msleep(100);
     stopTuah(800,200); 
     drive(-1, 300, .5); 
-    turn(-1, 400, 1100);   //, moves to left of lane, moves up, and turns right 90
-
+    turn(-1, 400, 1095);   //, moves to left of lane, moves up, and turns right 90 (right is 1095 when lined up with black line correctly
     
     drive(1, 800, 20.8); //drives to first pom, sweeps
     sweepWater();
@@ -60,10 +58,15 @@ int main()
     
  	stopTuah(800, 50); //heads to middle line
     ao();
+    msleep(100);
+    drive(-1, 800, 9);
+    ao();
     msleep(2000);//grab yellow cube/poms here
+    // grab yellow cube first
+    //values
     printf("Yellow 1/n");
     
-    drive(-1, 800, 30); //grab red cubes/poms here  WAS 27
+    drive(-1, 800, 28); //grab red cubes/poms here  WAS 27
     ao();
     msleep(4000);
     printf("small cube 1/n");
@@ -92,7 +95,7 @@ void drive(int direction, int speed, int distance)
 {
     cmpc(lm);
    cmpc(rm);
-    distance = distance * 101.1206896;
+    distance = distance * 100.015873;  //WAS 101.1206896
     if (direction > 0) //forward if 1
     { 
         while(( ( abs(gmpc(rm)) + abs(gmpc(lm)) ) / 2 ) < distance) // takes the clear motors clear value and moves until its reached the distance
@@ -115,7 +118,7 @@ void drive(int direction, int speed, int distance)
 void turn (int direction, int turn_speed, int distance)   // positive = CCW, negative = CW +=left - = right
 {
 cmpc(lm);
-cmpc(rm); 
+cmpc(rm);
 if (direction < 0) //turn left
 	{
 	while(( (abs(gmpc(rm)) + abs(gmpc(lm)) ) / 2) < distance)
@@ -212,3 +215,4 @@ void sweepWater(){
 	msleep(200);
     set_servo_position(sweep, sweep_in);
 }
+
